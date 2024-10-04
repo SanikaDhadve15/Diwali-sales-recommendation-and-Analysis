@@ -4,8 +4,6 @@ import chardet
 
 def data_analysis():
     st.subheader("Data Upload & Analysis")
-    st.image( caption='Diwali Sales Data', use_column_width=True)
-
 
     # File uploader
     uploaded_file = st.file_uploader("Upload your Diwali sales data (CSV)", type=["csv"])
