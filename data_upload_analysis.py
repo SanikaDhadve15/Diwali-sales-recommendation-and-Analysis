@@ -1,14 +1,10 @@
 import streamlit as st
 import pandas as pd
 import chardet
-from PIL import Image
 
 def data_analysis():
     st.subheader("Data Upload & Analysis")
-    # Display an image
-    image_path = r"C:/Users/Sanika/OneDrive/Desktop/SEM 7/Big data analaytics/BDAProject/di.jpg"  # Using raw string
-    image = Image.open(image_path)
-    st.image(image, caption='Diwali Sales Data', use_column_width=True)
+    st.image( caption='Diwali Sales Data', use_column_width=True)
 
 
     # File uploader
