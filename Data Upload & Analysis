@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import chardet
 
-def data_analysis():
-    st.title("Data Upload & Analysis")
+def data_upload_and_analysis():
+    st.title("Data Upload and Analysis")
 
     uploaded_file = st.file_uploader("Upload your Diwali sales data (CSV)", type=["csv"])
 
