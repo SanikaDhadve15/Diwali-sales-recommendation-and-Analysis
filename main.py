@@ -1,46 +1,42 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
+import pandas as pd
+import chardet
 
-# Import the page modules
-import data_analysis, visualizations, recommendations, about
+def app():
+    # File uploader
+    uploaded_file = st.file_uploader("Upload your Diwali sales data (CSV)", type=["csv"])
 
-st.set_page_config(page_title="Diwali Sales Analysis")
+    if uploaded_file is not None:
+        # Detect encoding
+        rawdata = uploaded_file.read()
+        result = chardet.detect(rawdata)
+        encoding = result['encoding']
+        
+        # Move the cursor back to the beginning of the file
+        uploaded_file.seek(0)
 
-class MultiApp:
-    def __init__(self):
-        self.apps = []
+        # Read the data with the detected encoding
+        try:
+            data = pd.read_csv(uploaded_file, encoding=encoding)
+            st.success("File loaded successfully!")
 
-    def add_app(self, title, function):
-        self.apps.append({"title": title, "function": function})
+            # Store the DataFrame in session state
+            st.session_state.data = data
 
-    def run(self):
-        with st.sidebar:
-            app = option_menu(
-                menu_title='Diwali Sales Analysis',
-                options=['Data Upload & Analysis', 'Visualizations', 'Recommendations', 'About'],
-                icons=['upload', 'bar-chart', 'lightbulb', 'info-circle'],
-                menu_icon='cast',
-                default_index=0,
-                styles={
-                    "container": {"padding": "5!important", "background-color": 'black'},
-                    "icon": {"color": "white", "font-size": "23px"},
-                    "nav-link": {"color": "white", "font-size": "20px", "text-align": "left", "margin": "0px", "--hover-color": "blue"},
-                    "nav-link-selected": {"background-color": "#02ab21"},
-                }
-            )
+            # Display the first few rows of the dataframe
+            st.write("Preview of the data:")
+            st.dataframe(data.head())
+            st.write("Columns in the dataset:", data.columns.tolist())
 
-        for app in self.apps:
-            if app['title'] == app:
-                app['function']()
+            # Basic Analysis
+            st.subheader("Basic Analysis")
+            st.write("Total Number of Entries:", len(data))
+            if 'Amount' in data.columns:
+                st.write("Total Amount Spent:", data['Amount'].sum())
+            if 'Orders' in data.columns:
+                st.write("Total Number of Orders:", data['Orders'].sum())
+                
+            # Additional features can be added here
 
-# Create an instance of the MultiApp class
-app = MultiApp()
-
-# Add pages
-app.add_app("Data Upload & Analysis", data_analysis.app)
-app.add_app("Visualizations", visualizations.app)
-app.add_app("Recommendations", recommendations.app)
-app.add_app("About", about.app)
-
-# Run the app
-app.run()
+        except Exception as e:
+            st.error(f"Error reading the CSV file: {e}")
