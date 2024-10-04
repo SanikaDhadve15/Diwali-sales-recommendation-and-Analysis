@@ -1,9 +1,15 @@
 import streamlit as st
 import pandas as pd
 import chardet
+from PIL import Image
 
 def data_analysis():
     st.subheader("Data Upload & Analysis")
+    # Display an image
+    image_path = "path/to/your/image.jpg"  # Replace with your image path
+    image = Image.open(image_path)
+    st.image(image, caption='Diwali Sales Data', use_column_width=True)
+
 
     # File uploader
     uploaded_file = st.file_uploader("Upload your Diwali sales data (CSV)", type=["csv"])
