@@ -1,17 +1,17 @@
 import streamlit as st
 import pandas as pd
-import chardet
 import matplotlib.pyplot as plt
 from PIL import Image
+import chardet
 
 # Title of the dashboard
 st.title("Diwali Sales Analysis")
 
 # Display an image
-image_path = r"C:\Users\Sanika\OneDrive\Desktop\SEM 7\Big data analaytics\BDAProject\di.jpg"
+image_path =r"C:\Users\Sanika\OneDrive\Desktop\SEM 7\Big data analaytics\BDAProject\di.jpg"
+
 image = Image.open(image_path)
 st.image(image, caption='Celebrating Diwali Sales', width=300)
-  
 
 # Sidebar for navigation
 st.sidebar.title("Dashboard")
@@ -60,13 +60,14 @@ if page == "Data Upload & Analysis":
             st.write("Total Amount Spent:", data['Amount'].sum())
         if 'Orders' in data.columns:
             st.write("Total Number of Orders:", data['Orders'].sum())
-
-        # Filter by Age Group
+            
+         # Filter by Age Group
         if 'Age Group' in data.columns:
             age_group = st.selectbox("Select Age Group", data['Age Group'].unique())
             filtered_data = data[data['Age Group'] == age_group]
             st.write(f"Data for Age Group '{age_group}':")
             st.dataframe(filtered_data)
+
 
 elif page == "Visualizations":
     if 'data' in st.session_state:
@@ -112,7 +113,7 @@ elif page == "Recommendations":
         # Check for necessary columns
         required_columns = ['Product_ID', 'Product_Category', 'Orders']
         if not all(col in data.columns for col in required_columns):
-            st.error("Required columns 'Product_ID', 'Product_Category' or 'Orders'are missing.")
+            st.error("Required columns 'Product_ID', 'Product_Category', or 'Orders' are missing.")
         else:
             # Calculate the total orders for each product
             total_orders = data.groupby('Product_ID')['Orders'].sum().sort_values(ascending=False)
@@ -129,7 +130,7 @@ elif page == "Recommendations":
 
             if not recommendations.empty:
                 st.subheader(f"Recommended Products in the '{selected_product_category}' Category")
-                recommended_products = recommendations[['Product_ID','Product_Category', 'Orders']].sort_values(by='Orders', ascending=False)
+                recommended_products = recommendations[['Product_ID', 'Product_Category', 'Orders']].sort_values(by='Orders', ascending=False)
                 st.write(recommended_products)
             else:
                 st.write("No recommendations available for this product.")
