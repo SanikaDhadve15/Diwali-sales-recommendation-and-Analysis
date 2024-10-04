@@ -1,5 +1,5 @@
 import streamlit as st
-from data_analysis import data_analysis
+from data_upload_analysis import data_analysis
 from visualizations import show_visualizations
 from recommendations import show_recommendations
 
